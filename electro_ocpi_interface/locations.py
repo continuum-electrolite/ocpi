@@ -1,9 +1,5 @@
 from uuid import uuid4
-import uvicorn
-from py_ocpi import get_application
-from py_ocpi.core import enums
-from py_ocpi.modules.versions.enums import VersionNumber
-from py_ocpi.modules.locations.v_2_2_1.schemas import Location
+from .meta_classes import GetClass, UpdateClass, CreateClass, ListClass
 
 LOCATIONS = [
     {
@@ -187,25 +183,35 @@ LOCATIONS = [
 ]
 
 
-class Crud:
-    @classmethod
-    async def get(cls, module: enums.ModuleID, role: enums.RoleEnum, id, *args, **kwargs):
-        print("calling get")
+class GetLocation(GetClass):
+    def __init__(self, module, role, id, *args, **kwargs):
+        self.module = module
+
+    def get_information(self):
         return LOCATIONS[0]
 
-    @classmethod
-    async def list(cls, module: enums.ModuleID, role: enums.RoleEnum, filters: dict, *args, **kwargs) -> list:
-        print("calling list")
+
+class ListLocation(ListClass):
+    def __init__(self, module, role, filters, *args, **kwargs):
+        self.module = module
+
+    def list_information(self):
         return LOCATIONS, 1, True
 
 
-class Adapter:
-    @classmethod
-    def location_adapter(cls, data) -> Location:
-        print("calling location adapter")
-        return Location(**data)
+class CreateLocation(CreateClass):
+    def __int__(self, module, role, data, *args, **kwargs):
+        self.module = module
+
+    def create_entry(self):
+        return ""
 
 
-app = get_application([VersionNumber.v_2_2_1], [enums.RoleEnum.cpo], Crud, Adapter)
+class UpdateLocation(UpdateClass):
+    def __int__(self, module, role, data, id, *args, **kwargs):
+        self.module = module
 
-uvicorn.run(app)
+    def update_entry(self):
+        return ""
+
+

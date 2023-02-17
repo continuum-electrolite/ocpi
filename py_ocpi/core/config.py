@@ -1,5 +1,5 @@
 from typing import List, Union
-
+import pathlib
 from pydantic import AnyHttpUrl, BaseSettings, validator
 
 
@@ -23,7 +23,7 @@ class Settings(BaseSettings):
 
     class Config:
         case_sensitive = True
-        env_file = ".env"
+        env_file = pathlib.Path.joinpath(pathlib.Path(__file__).resolve().parents[0], f".env")
 
 
 settings = Settings()
